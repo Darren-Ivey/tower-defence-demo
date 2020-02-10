@@ -20,4 +20,4 @@ export const drawLines = (graphics) => {
         graphics.lineTo(j * 64, 512);
     }
     graphics.strokePath();
-}
+};

@@ -30,17 +30,14 @@ var config = {
   }
 };
 
-// Global game 
-var game = new Phaser.Game(config);
-var enemies;
-
-// Main scene methods
 function preload() {
   this.load.atlas('sprites', spriteSheetImg, spriteSheetJson);
   this.load.image('bullet', bulletImg);
 }
 
 function create() {
+
+  // Draw grid
   var path;
   var graphics = this.add.graphics();
   drawLines(graphics);
@@ -52,7 +49,8 @@ function create() {
   path.draw(graphics);
 
   // Enemy
-  enemies = this.physics.add.group({
+  this.nextEnemy = 0;
+  this.enemies = this.physics.add.group({
     classType: () => {
       return new Enemy(this, path)
     },
@@ -60,31 +58,31 @@ function create() {
   });
 
   // Bullets
-  const bullets = this.physics.add.group({
+  this.bullets = this.physics.add.group({
     classType: () => {
       return new Bullet(this)
     },
     runChildUpdate: true
   });
 
+  this.physics.add.overlap(this.enemies, this.bullets, damageEnemy);
+
   // Turrets
-  const turrets = this.add.group({
+  this.turrets = this.add.group({
     classType: () => {
-      return new Turret(this, grid, enemies, bullets)
+      return new Turret(this, grid, this.enemies, this.bullets)
     },
     runChildUpdate: true
   });
 
-  this.nextEnemy = 0;
-  this.physics.add.overlap(enemies, bullets, damageEnemy);
   this.input.on('pointerdown', (pointer) => {
-    placeTurret(pointer, turrets)
+    placeTurret(pointer, this.turrets)
   });
 }
 
 function update(time, delta) {
   if (time > this.nextEnemy) {
-    var enemy = enemies.get();
+    var enemy = this.enemies.get();
     if (enemy) {
       enemy.setActive(true);
       enemy.setVisible(true);
@@ -93,3 +91,5 @@ function update(time, delta) {
     }
   }
 }
+
+new Phaser.Game(config);

@@ -1,13 +1,13 @@
 import {
     grid
-} from "./map"
+} from "./map";
 
 const addBullet = (bullets, x, y, angle) => {
     var bullet = bullets.get();
     if (bullet) {
         bullet.fire(x, y, angle);
     }
-}
+};
 
 const getEnemy = (x, y, distance, enemies) => {
     var enemyUnits = enemies.getChildren();
@@ -16,7 +16,7 @@ const getEnemy = (x, y, distance, enemies) => {
             return enemyUnits[i];
     }
     return false;
-}
+};
 
 export const placeTurret = (pointer, turrets) => {
     var turretCount = 0;
@@ -36,7 +36,7 @@ export const placeTurret = (pointer, turrets) => {
             turretCount++
         }
     }
-}
+};
 
 export class Turret extends Phaser.GameObjects.Image {
     constructor(scene, grid, enemies, bullets) {
@@ -47,15 +47,18 @@ export class Turret extends Phaser.GameObjects.Image {
         this.bullets = bullets;
         this.turret(scene);
     }
+
     turret(scene) {
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
         this.nextTic = 0;
     };
+
     place(i, j) {
         this.y = i * 64 + 64 / 2;
         this.x = j * 64 + 64 / 2;
         this.grid[i][j] = 1;
     };
+
     fire() {
         var enemy = getEnemy(this.x, this.y, 200, this.enemies);
         if (enemy) {
@@ -65,12 +68,13 @@ export class Turret extends Phaser.GameObjects.Image {
             this.angle = (angle + Math.PI / 2) * Phaser.Math.RAD_TO_DEG;
         }
     };
-    update(time, delta) {
+
+    update(time) {
         if (time > this.nextTic) {
             this.fire();
             this.nextTic = time + 1000;
         }
-    }
+    };
 };
 
 export default Turret;
