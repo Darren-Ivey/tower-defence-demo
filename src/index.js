@@ -41,7 +41,6 @@ function create() {
   var graphics = this.add.graphics();
   drawLines(graphics);
   path = this.add.path(96, -32);
-  xw
   path.lineTo(96, 164);
   path.lineTo(480, 164);
   path.lineTo(480, 544);

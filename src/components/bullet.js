@@ -1,5 +1,5 @@
 export const damageEnemy = (enemy, bullet) => {
-    var BULLET_DAMAGE = 20;
+    const BULLET_DAMAGE = 20;
     if (enemy.active === true && bullet.active === true) {
         bullet.setActive(false);
         bullet.setVisible(false);
