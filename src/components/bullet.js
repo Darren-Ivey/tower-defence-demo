@@ -1,3 +1,15 @@
+export const damageEnemy = (enemy, bullet) => {
+    var BULLET_DAMAGE = 20;
+    // only if both enemy and bullet are alive
+    if (enemy.active === true && bullet.active === true) {
+        // we remove the bullet right away
+        bullet.setActive(false);
+        bullet.setVisible(false);
+        // decrease the enemy hp with BULLET_DAMAGE
+        enemy.receiveDamage(BULLET_DAMAGE);
+    }
+}
+
 export class Bullet extends Phaser.GameObjects.Image {
     constructor(scene) {
         super(scene);
